@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LBRCE Campus Navigator</title>
+<style>
+:root{--navy:#142D4E;--blue:#2563EB;--pale:#EFF6FF;--ink:#182230;--muted:#667085;--canvas:#F5F7FB;--card:#fff;--line:#E7ECF3;--chip:#F2F4F7;--input:#F7F9FC;--red:#DC2626;--warnbg:#FFF7E6;--warnline:#FDE68A;--warnink:#92400E;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--canvas:#0F1623;--card:#182233;--line:#26334A;--ink:#E6EDF7;--muted:#9AA8BF;--pale:#1B2C4D;--chip:#223049;--input:#1E2A3F;--warnbg:#2B2410;--warnline:#5B4A14;--warnink:#F5D58A}}
+:root[data-theme="dark"]{--canvas:#0F1623;--card:#182233;--line:#26334A;--ink:#E6EDF7;--muted:#9AA8BF;--pale:#1B2C4D;--chip:#223049;--input:#1E2A3F;--warnbg:#2B2410;--warnline:#5B4A14;--warnink:#F5D58A}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--ink);font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+button{font:inherit;cursor:pointer}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);height:76px;display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid var(--line)}
+.logo{width:42px;height:42px;border-radius:13px;background:var(--navy);display:grid;place-items:center;color:#fff;font-size:20px}
+.brand b{display:block;font-size:18px;font-weight:800}.brand small{font-size:10px;letter-spacing:1.6px;color:var(--muted)}
+.sp{flex:1}
+.pill{background:var(--warnbg);color:var(--warnink);font-size:10px;font-weight:800;padding:7px 12px;border-radius:30px}
+.ibtn{background:none;border:0;font-size:20px;padding:8px;border-radius:50%;color:var(--blue)}
+.ibtn:hover{background:var(--pale)}
+.layout{display:flex;min-height:calc(100vh - 76px)}
+.side{width:238px;background:var(--card);padding:12px;flex-shrink:0;display:flex;flex-direction:column}
+.side h6{margin:12px 12px 10px;font-size:10px;letter-spacing:1.5px;color:var(--muted)}
+.nav{display:flex;align-items:center;gap:12px;width:100%;border:0;background:none;color:var(--ink);padding:11px 12px;border-radius:12px;font-size:13px;font-weight:600;text-align:left;margin:3px 0}
+.nav.on{background:var(--pale);color:var(--blue);font-weight:800}
+.tip{margin-top:auto;background:var(--canvas);border-radius:16px;padding:14px;font-size:12px;color:var(--muted);line-height:1.4}
+.tip b{display:block;color:var(--ink);font-size:14px;margin:6px 0 4px}
+main{flex:1;min-width:0;padding:30px;max-width:1200px}
+.bottom{display:none}
+h2.t{margin:0;font-size:21px;font-weight:800}.sub{margin:5px 0 0;font-size:13px;color:var(--muted)}
+.hero{border-radius:26px;padding:34px;color:#fff;background:linear-gradient(135deg,#142D4E,#2457A6 55%,#3676D8)}
+.hero .tag{display:inline-block;background:rgba(255,255,255,.14);padding:7px 11px;border-radius:30px;font-size:10px;letter-spacing:1.4px;font-weight:700}
+.hero h1{font-size:38px;line-height:1.12;margin:18px 0 10px;font-weight:800}
+.hero p{margin:0 0 22px;color:#DCEBFF;font-size:14px}
+.search{position:relative;max-width:700px}
+.search input{width:100%;border:0;border-radius:14px;padding:15px 48px 15px 44px;font-size:15px;background:#fff;color:#182230;outline:none}
+.search .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--blue)}
+.search button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--blue);font-size:20px;padding:8px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.tags span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:7px 10px;border-radius:30px;font-size:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;text-align:left;color:var(--ink)}
+.q i{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;font-style:normal;font-size:19px;margin-bottom:12px}
+.q b{font-size:13px;display:block}.q small{color:var(--muted);font-size:11px}
+.sec{margin-top:28px}
+.tile{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:10px;cursor:pointer}
+.tile .ic{width:48px;height:48px;border-radius:14px;background:var(--pale);display:grid;place-items:center;font-size:21px;flex-shrink:0}
+.tile .m{flex:1;min-width:0}.tile b{font-size:14px}.tile .l{font-size:12px;color:var(--muted);margin:5px 0 6px}
+.cat{display:inline-block;background:var(--chip);color:var(--muted);font-size:10px;font-weight:700;padding:4px 8px;border-radius:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px}
+.map{position:relative;height:230px;background:#EAF2E6;border-radius:16px;overflow:hidden;margin-top:16px}
+.map .h{position:absolute;left:0;right:0;top:105px;height:22px;background:#D8E1D3}.map .v{position:absolute;top:0;bottom:0;left:155px;width:20px;background:#D8E1D3}
+.bld{position:absolute;width:112px;height:66px;border:2px solid #fff;border-radius:10px;display:grid;place-items:center;font-size:10px;font-weight:800;color:var(--navy);text-align:center}
+.me{position:absolute;left:147px;top:91px;width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center}
+.note{font-size:12px;color:var(--muted);line-height:1.4;margin-top:10px}
+.warn{background:var(--warnbg);border:1px solid var(--warnline);color:var(--warnink);border-radius:16px;padding:16px;font-size:12px;line-height:1.45;margin-top:22px}
+.info{background:var(--pale);border:1px solid #BFDBFE;color:#1E40AF;border-radius:18px;padding:18px;font-size:14px;line-height:1.4;margin-top:18px}
+:root[data-theme="dark"] .info{color:#9DBEFF;border-color:#2B4A85}
+.field{width:100%;border:0;background:var(--input);color:var(--ink);border-radius:14px;padding:14px 16px;font:inherit;outline:none;margin-top:12px}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:14px 0 18px;padding-bottom:4px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;padding:8px 14px;font-size:13px;white-space:nowrap}
+.chip.on{background:var(--pale);color:var(--blue);border-color:var(--blue);font-weight:700}
+.rowh{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.btn{border:0;background:var(--blue);color:#fff;border-radius:20px;padding:10px 18px;font-weight:700;font-size:13px}
+.btn.o{background:none;border:1px solid var(--line);color:var(--blue)}
+.btn.t{background:none;color:var(--blue)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:20px}
+.fc{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;cursor:pointer;min-height:255px;display:flex;flex-direction:column}
+.fc .av{width:62px;height:62px;border-radius:18px;background:var(--pale);display:grid;place-items:center;font-size:32px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.stat{width:165px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.stat b{font-size:26px;display:block;margin:10px 0 2px}.stat small{color:var(--muted);font-size:12px}
+.adm{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 14px;margin-top:10px}
+dialog{border:0;border-radius:24px;padding:24px;width:min(460px,92vw);background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog h3{margin:0 0 12px;font-size:20px;font-weight:800}
+.acts{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#222;color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;z-index:20;max-width:90vw}
+.empty{text-align:center;background:var(--card);border-radius:18px;padding:36px;color:var(--muted)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.fn{display:flex;gap:12px;align-items:center;background:var(--pale);border:1px solid var(--line);border-radius:14px;padding:12px 14px}.fn span{font-size:22px}.fn b{font-size:14px;display:block}.fn small{color:var(--muted);font-size:12px}.fn.end{background:#DCFCE7;color:#14532D;border-color:#86EFAC}.fn.end small{color:#166534}.ar{text-align:center;color:var(--blue);font-size:20px;line-height:1;margin:4px 0}
+dialog{max-height:90vh;overflow:auto}
+@media (max-width:979px){
+ .side,.pill{display:none}main{padding:18px}.hero{padding:22px}.hero h1{font-size:30px}.grid4{grid-template-columns:repeat(2,1fr)}
+ .bottom{display:flex;position:sticky;bottom:0;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+ .bottom button{flex:1;border:0;background:none;color:var(--muted);padding:10px 0;font-size:11px}.bottom button span{display:block;font-size:20px}.bottom .on{color:var(--blue);font-weight:800}
+ .layout{min-height:calc(100vh - 76px - 60px)}.top{padding:0 14px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="logo">🧭</div>
+ <div class="brand"><b>LBRCE Navigator</b><small>CAMPUS WAYFINDER</small></div>
+ <div class="sp"></div><div class="pill">BETA</div><button class="ibtn" id="thm" title="Toggle dark mode" aria-label="Toggle dark mode">🌓</button>
+ <button class="ibtn" id="emg" title="Emergency contacts" aria-label="Emergency contacts" style="color:var(--red)">🚨</button>
+</header>
+<div class="layout">
+ <aside class="side" id="side"></aside>
+ <main id="page"></main>
+</div>
+<nav class="bottom" id="bottom"></nav>
+<dialog id="dlg"></dialog>
+<div class="toast" id="toast" hidden></div>
+<script>
+const CATS=['All','Lab','Classroom','Faculty','Department','Facility','Office','Help Desk'];
+const ICON={Lab:'🔬',Faculty:'👤',Department:'🏢',Office:'💼','Help Desk':'🎧'};
+const P=(name,category,block,floor,description,faculty='',designation='')=>({name,category,block,floor,description,faculty,designation});
+let places=[
+P('Computer Science Lab','Lab','CSE Block','Ground floor','Computer laboratory for practical sessions and department activities.'),
+P('Software Engineering Lab','Lab','CSE Block','First floor','Sample listing for software engineering practicals. Confirm the exact room with campus administration.'),
+P('Central Library','Facility','Library Block','Ground floor','Study space and academic resources for students.'),
+P('Principal Office','Office','Administrative Block','First floor','Administrative office. Ask reception to confirm visiting hours.'),
+P('Admissions Office','Office','Administrative Block','Ground floor','Information and assistance for admissions-related queries.'),
+P('Mechanical Engineering Department','Department','Mechanical Block','Ground floor','Department reception and academic information.'),
+P('Electrical Engineering Lab','Lab','EEE Block','First floor','Sample campus directory entry. Verify the exact room before visiting.'),
+P('Seminar Hall','Facility','Main Block','Second floor','A venue for presentations, workshops and college events.'),
+P('Student Help Desk','Help Desk','Administrative Block','Ground floor','Ask for help with directions and campus information.')];
+const fd='Sample profile for the presentation. Replace with verified official information.';
+let faculty=[
+P('Faculty Member 1','Faculty','CSE Block','First floor',fd,'Computer Science & Engineering','Faculty profile demo'),
+P('Faculty Member 2','Faculty','EEE Block','Ground floor',fd,'Electrical & Electronics Engineering','Faculty profile demo'),
+P('Faculty Member 3','Faculty','Mechanical Block','First floor',fd,'Mechanical Engineering','Faculty profile demo'),
+P('Faculty Member 4','Faculty','Main Block','Ground floor',fd,'Civil Engineering','Faculty profile demo')];
+let nav=0,query='',category='All',favs=[],recent=[],admin_ok=false,blk='All',routeFrom='Main Gate';
+const LS={get(k,d){try{const v=localStorage.getItem('lbrce2_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('lbrce2_'+k,JSON.stringify(v))}catch(e){}}};
+const BL=[['A','Main Block'],['B','CSE & IT Block'],['C','ECE Block'],['D','EEE Block'],['E','Mechanical Block'],['F','Civil & Aerospace Block']];
+const BN=BL.map(b=>b[1]),FL=['Ground floor','First floor','Second floor'];
+const rc=(b,f,n)=>`${BL[b][0]}-${f+1}${String(n).padStart(2,'0')}`;
+function genP(){let s=11;const r=()=>(s=(s*9301+49297)%233280)/233280,out=[];
+[['Central Library','Facility',0,0,'Study space and academic resources for students.'],['Admissions Office','Office',0,0,'Information and assistance for admissions-related queries.'],['Student Help Desk','Help Desk',0,0,'Ask for help with directions and campus information.'],['Principal Office','Office',0,1,'Administrative office. Ask reception to confirm visiting hours.'],['Seminar Hall','Facility',0,2,'A venue for presentations, workshops and college events.'],['Computer Science Lab','Lab',1,0,'Computer laboratory for practical sessions and department activities.'],['Software Engineering Lab','Lab',1,1,'Practical lab for software engineering sessions.'],['Electronics Lab','Lab',2,1,'Electronics and communication practical lab.'],['Electrical Engineering Lab','Lab',3,1,'Electrical machines and circuits practical lab.'],['Mechanical Engineering Department','Department',4,0,'Department office and academic information.'],['Civil Engineering Department','Department',5,0,'Department office and academic information.'],['Aerospace Engineering Department','Department',5,1,'Department office and academic information.']].forEach((x,k)=>{const q=P(x[0],x[1],BN[x[2]],FL[x[3]],x[4]);q.room=rc(x[2],x[3],20+k);out.push(q)});
+BL.forEach((b,bi)=>FL.forEach((fl,fi)=>{const u=new Set();while(u.size<3)u.add(1+Math.floor(r()*15));[...u].sort((a,c)=>a-c).forEach(n=>{const q=P('Classroom '+rc(bi,fi,n),'Classroom',b[1],fl,'Lecture classroom in the '+b[1]+'.');q.room=rc(bi,fi,n);out.push(q)})}));return out}
+function genF(){const D={cse:'Computer Science & Engineering',it:'Information Technology',ai:'AI & Data Science',csm:'CSE (AI & ML)',ece:'Electronics & Communication Engineering',eee:'Electrical & Electronics Engineering',me:'Mechanical Engineering',ce:'Civil Engineering',ase:'Aerospace Engineering',mba:'MBA',fed:'Freshman Engineering'};
+return [['Dr. Appa Rao K','Principal','me',0],['Dr. B. Ramesh Reddy','Vice Principal','ece',0],['Dr. Seelam Nagarjuna Reddy','Professor & HOD','cse',1],['Dr. M. Srinivasa Rao','Professor & Dean','cse',1],['Dr. Venkata Narayana Ch','Professor','cse',1],['Dr. Ratnakishore Dasari','Professor & HOD','it',1],['Dr. Srinivasa Rao Buraga','Professor','it',1],['Dr. Parabattina Bhagath','Professor & HOD','ai',1],['Dr. Ramadevi Odugu','Professor','ai',1],['Dr. Somala Jayaprada','Professor & HOD','csm',1],['Dr. Banavathu Rajendra Prasad','Associate Professor','csm',1],['Dr. Gundala Srinivasulu','Professor & HOD','ece',2],['Dr. Amar Babu Y','Professor','ece',2],['Dr. Poornaiah Billa','Professor','ece',2],['Dr. Sobha Rani P','Professor & HOD','eee',3],['Dr. K. Ramalingeswara Prasad','Professor & IQAC Coordinator','eee',3],['Dr. Mule Bala Satya Sreekara Reddy','Professor & HOD','me',4],['Dr. Pichi Reddy S','Professor & Dean','me',4],['Dr. Dilip Kumar K','Professor','me',4],['Dr. Kollipara Venkata Ramana','Associate Professor & HOD','ce',5],['Dr. Ramakrishna V','Professor','ce',5],['Dr. Lova Raju P','Professor & HOD','ase',5],['Dr. L Prabhu','Associate Professor','ase',5],['Dr. Kakarla Deepika','Associate Professor & HOD','mba',0],['Dr. Adisesha Reddy A','Professor','mba',0],['Dr. Satyanarayana T','Professor & HOD','fed',0],['Dr. Parvathi V','Professor','fed',0]].map((x,i)=>{const f=i%2+1,q=P(x[0],'Faculty',BN[x[3]],FL[f],`${x[1]}, Department of ${D[x[2]]}. Name and designation from lbrce.ac.in (A.Y. 2025-26). Cabin location is sample data.`,D[x[2]],x[1]);q.room=rc(x[3],f,40+i);return q})}
+places=LS.get('places',genP());faculty=LS.get('faculty',genF());favs=LS.get('favs',[]);recent=LS.get('recent',[]);
+if(LS.get('theme',''))document.documentElement.dataset.theme=LS.get('theme','');
+const save=()=>{LS.set('places',places);LS.set('faculty',faculty);LS.set('favs',favs);LS.set('recent',recent)};
+const fk=p=>p.name+'|'+p.block;
+const isFav=p=>favs.includes(fk(p));
+function fav(i){const p=all()[i];favs=isFav(p)?favs.filter(x=>x!==fk(p)):[...favs,fk(p)];render()}
+function addRecent(q){q=q.trim();if(q.length<2)return;recent=[q,...recent.filter(x=>x!==q)].slice(0,5);save()}
+function share(i){const p=all()[i],t=`${p.name} — ${p.block}, ${p.floor} (LBRCE Navigator)`;if(navigator.share)navigator.share({title:p.name,text:t,url:location.href}).catch(()=>{});else{try{navigator.clipboard.writeText(t+' '+location.href);toast('Copied to clipboard')}catch(e){toast('Sharing is not supported here')}}}
+function extras(){const s=all().filter(isFav);let h='';
+if(recent.length)h+=`<div class="sec"><b>Recent searches</b><div class="chips" style="margin:10px 0 0">${recent.map(r=>`<button class="chip" onclick="query=this.textContent;go(1)">${esc(r)}</button>`).join('')}</div></div>`;
+if(s.length)h+=`<div class="sec"><h2 class="t">Saved places</h2><p class="sub">Your starred destinations</p>${s.map(tile).join('')}</div>`;
+return h}
+function loginView(){return `<div class="card" style="max-width:380px;margin:40px auto"><h2 class="t">Admin sign in</h2><p class="sub">Staff access to manage campus data</p><input class="field" id="pw" type="password" placeholder="Passcode" aria-label="Passcode" onkeydown="if(event.key==='Enter')login()"><p class="note" id="pe" style="color:var(--red)"></p><div class="acts"><button class="btn" onclick="login()">Sign in</button></div><p class="note">Demo passcode: <b>lbrce2026</b></p></div>`}
+function login(){if($('#pw').value==='lbrce2026'){admin_ok=true;render();toast('Signed in as admin')}else $('#pe').textContent='Incorrect passcode. Try again.'}
+function resetData(){try{localStorage.clear()}catch(e){}location.reload()}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const all=()=>[...places,...faculty];
+const filtered=()=>{const q=query.toLowerCase().trim();return all().filter(p=>(!q||`${p.name} ${p.category} ${p.block} ${p.floor} ${p.faculty} ${p.designation}`.toLowerCase().includes(q))&&(category==='All'||p.category===category)&&(blk==='All'||p.block===blk))};
+const idx=p=>all().indexOf(p);
+function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>e.hidden=true,2800)}
+function maps(i){directions(i)}
+function directions(i,from){if(from)routeFrom=from;const p=all()[i],f=routeFrom,S=[];
+if(f==='Main Gate'){S.push(['🚪','Start: Main Gate','Enter the campus']);S.push(['🛣️','Follow the central campus road','Head towards the '+p.block])}
+else if(f===p.block)S.push(['📍','Start: '+f,'You are already in this block']);
+else{S.push(['📍','Start: '+f,'Exit the block']);S.push(['🛣️','Walk along the campus path','Head towards the '+p.block])}
+if(f!==p.block)S.push(['🏢',p.block,'Enter through the main entrance']);
+S.push(FL.indexOf(p.floor)>0?['🪜','Take the stairs or lift','Go up to the '+p.floor.toLowerCase()]:['↔️','Stay on the ground floor','Walk along the corridor']);
+S.push(['🚪',p.room?'Room '+p.room:p.name,'Check the room number on the door']);
+S.push(['✅',p.name,'You have arrived']);
+const flow=S.map((s,k)=>(k?'<div class="ar">↓</div>':'')+`<div class="fn ${k===S.length-1?'end':''}"><span>${s[0]}</span><div><b>${esc(s[1])}</b><small>${esc(s[2])}</small></div></div>`).join('');
+show(`<h3>Directions to ${esc(p.name)}</h3><label class="note">Start from</label><select class="field" style="margin:4px 0 14px" onchange="directions(${i},this.value)">${['Main Gate',...BN].map(b=>`<option value="${esc(b)}" ${b===f?'selected':''}>${esc(b)}</option>`).join('')}</select>${flow}<p class="note">Route is based on the block and floor. Confirm on campus.</p><div class="acts"><button class="btn t" onclick="dlg.close()">Close</button><button class="btn o" onclick="gmaps(${i})">Open in Google Maps</button></div>`)}
+function gmaps(i){const p=all()[i];const d=encodeURIComponent(`${p.name}, ${p.block}, Lakireddy Bali Reddy College of Engineering, Andhra Pradesh, India`);window.open('https://www.google.com/maps/dir/?api=1&destination='+d,'_blank','noopener')}
+function go(n){nav=n;render()}
+const NAVS=[['🏠','Overview','Home'],['🧭','Explore places','Explore'],['👥','Faculty directory','Faculty'],['🛡️','Admin portal','Admin']];
+function tile(p){const i=idx(p);return `<div class="tile" onclick="openPlace(${i})"><div class="ic">${ICON[p.category]||'📍'}</div><div class="m"><b>${esc(p.name)}</b><div class="l">${esc(p.block)} • ${esc(p.floor)}${p.room?' • '+esc(p.room):''}</div><span class="cat">${esc(p.category)}</span></div><button class="ibtn" title="Save" aria-label="Save place" onclick="event.stopPropagation();fav(${i})" style="color:#F59E0B">${isFav(p)?'★':'☆'}</button><button class="ibtn" title="Directions" aria-label="Directions" onclick="event.stopPropagation();maps(${i})">➤</button></div>`}
+const notice=`<div class="warn">ℹ️ Faculty names and designations come from lbrce.ac.in (A.Y. 2025-26). Block, floor and room numbers are sample data. Verify them before public use.</div>`;
+function home(){
+ const q=(ic,bg,t,s,fn)=>`<button class="q" onclick="${fn}"><i style="background:${bg}">${ic}</i><b>${t}</b><small>${s}</small></button>`;
+ return `<div class="hero"><span class="tag">YOUR CAMPUS, MADE SIMPLE</span><h1>Find your way<br>around campus.</h1><p>Search for a classroom, lab, faculty member or campus facility.</p>
+ <div class="search"><span class="ic">🔍</span><input id="hs" placeholder="Try “Computer Science Lab” or “Library”" aria-label="Search campus"><button title="Explore results" aria-label="Explore results" onclick="query=$('#hs').value;addRecent(query);go(1)">→</button></div>
+ <div class="tags"><span>🚪 Rooms</span><span>🔬 Labs</span><span>👤 Faculty</span></div></div>
+ <div class="sec"><h2 class="t">Quick access</h2><p class="sub">Find common destinations around campus</p>
+ <div class="grid4">${q('🚪','#2563EB1A','Classrooms & Labs','Find a room',"category='Lab';go(1)")}${q('👥','#7C3AED1A','Faculty directory','Find faculty','go(2)')}${q('🏢','#0891B21A','Departments','Explore blocks',"category='Department';go(1)")}${q('🛟','#DC26261A','Help & safety','Useful contacts','showEmergency()')}</div></div>
+ ${extras()}<div class="sec"><h2 class="t">Popular destinations</h2><p class="sub">Sample directory entries for the demo</p>${places.slice(0,4).map(tile).join('')}</div>
+ <div class="card sec"><h2 class="t">Campus map preview</h2><p class="sub">Illustrative layout — not a surveyed campus map</p>
+ <div class="map"><div class="h"></div><div class="v"></div>
+ <div class="bld" style="left:18px;top:20px;background:#BBD7FF">CSE BLOCK</div><div class="bld" style="right:18px;top:20px;background:#D9CCFF">LIBRARY</div><div class="bld" style="left:18px;bottom:20px;background:#FFE0B2">ADMIN</div><div class="bld" style="right:18px;bottom:20px;background:#BCE9DD">EEE BLOCK</div><div class="me">◎</div></div>
+ <div class="acts" style="justify-content:flex-start"><button class="btn" onclick="window.open('https://www.google.com/maps/search/?api=1&query=16.749072,80.634794','_blank','noopener')">📍 Open college on Google Maps</button></div><p class="note">Layout shown is illustrative. Use the button above for the real campus location.</p></div>${notice}`}
+function explore(){const f=filtered();
+ return `<h2 class="t">Explore campus</h2><p class="sub">Search destinations and browse the sample directory</p>
+ <input class="field" id="es" value="${esc(query)}" placeholder="Search room, lab, faculty or block..." aria-label="Search">
+ <div class="chips">${CATS.map(c=>`<button class="chip ${c===category?'on':''}" onclick="category='${c}';render()">${c}</button>`).join('')}</div>
+ <select class="field" style="margin:0 0 14px" aria-label="Filter by block" onchange="blk=this.value;render()">${['All',...BN].map(b=>`<option value="${esc(b)}" ${b===blk?'selected':''}>${b==='All'?'All blocks':esc(b)}</option>`).join('')}</select><div class="rowh"><b>${f.length} destinations</b><button class="btn t" onclick="query='';category='All';blk='All';render()">↻ Reset</button></div>
+ ${f.length?f.map(tile).join(''):`<div class="empty"><div style="font-size:40px">🔎</div><b style="color:var(--ink)">No destinations found</b><p>Try a different search term or category.</p></div>`}`}
+function fac(){const q=query.toLowerCase();const l=faculty.filter(f=>`${f.name} ${f.faculty} ${f.block}`.toLowerCase().includes(q));
+ return `<h2 class="t">Faculty directory</h2><p class="sub">Names and designations from lbrce.ac.in (A.Y. 2025-26)</p>
+ <input class="field" id="fs" value="${esc(query)}" placeholder="Search name or department..." aria-label="Search faculty">
+ <div class="fgrid">${l.map(f=>{const i=idx(f);return `<div class="fc" onclick="openPlace(${i})"><div class="rowh"><div class="av">👤</div><button class="ibtn" aria-label="Directions" onclick="event.stopPropagation();maps(${i})">➤</button></div><b style="font-size:16px;margin-top:16px">${esc(f.name)}</b><span style="color:var(--blue);font-size:12px;font-weight:700;margin-top:5px">${esc(f.designation)}</span><span style="color:var(--muted);font-size:12px;margin-top:8px">${esc(f.faculty)}</span><span style="color:var(--muted);font-size:12px;margin-top:auto">📍 ${esc(f.block)}</span></div>`}).join('')}</div>${notice}`}
+function admin(){if(!admin_ok)return loginView();
+ return `<h2 class="t">Admin portal</h2><p class="sub">Manage the demo directory during your presentation</p>
+ <div class="info">ℹ️ Signed in as admin. Changes are saved in this browser and stay after a refresh.<div class="acts" style="justify-content:flex-start;margin-top:12px"><button class="btn o" onclick="admin_ok=false;render()">Log out</button><button class="btn o" onclick="resetData()">Reset sample data</button></div></div>
+ <div class="stats"><div class="stat">📍<b>${places.length}</b><small>Locations</small></div><div class="stat">👥<b>${faculty.length}</b><small>Faculty demos</small></div><div class="stat">🗂️<b>${new Set(places.map(p=>p.category)).size}</b><small>Categories</small></div></div>
+ <div class="rowh sec"><h2 class="t" style="font-size:19px">Campus locations</h2><button class="btn" onclick="editor()">+ Add location</button></div>
+ ${places.map((p,i)=>`<div class="adm"><div class="ic" style="width:42px;height:42px;border-radius:12px;background:var(--pale);display:grid;place-items:center">📍</div><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(p.name)}</b><div style="color:var(--muted);font-size:12px">${esc(p.category)} • ${esc(p.block)} • ${esc(p.floor)}</div></div><button class="ibtn" aria-label="Edit" onclick="editor(${i})">✏️</button><button class="ibtn" aria-label="Delete" onclick="delPlace(${i})">🗑️</button></div>`).join('')}
+ <div class="rowh sec"><h2 class="t" style="font-size:19px">Faculty demo profiles</h2><button class="btn o" onclick="addFaculty()">+ Add faculty</button></div>
+ ${faculty.map((f,i)=>`<div class="adm"><div style="flex:1;min-width:0"><b style="font-size:14px">${esc(f.name)}</b><div style="color:var(--muted);font-size:12px">${esc(f.faculty)} • ${esc(f.block)}</div></div><button class="ibtn" aria-label="Delete" onclick="faculty.splice(${i},1);render()">🗑️</button></div>`).join('')}`}
+function render(){save();
+ $('#side').innerHTML='<h6>NAVIGATION</h6>'+NAVS.map((n,i)=>`<button class="nav ${i===nav?'on':''}" onclick="go(${i})"><span>${n[0]}</span>${n[1]}</button>`).join('')+'<div class="tip">💡<b>First time here?</b>Search a place to see its details and open directions.</div>';
+ $('#bottom').innerHTML=NAVS.map((n,i)=>`<button class="${i===nav?'on':''}" onclick="go(${i})"><span>${n[0]}</span>${n[2]}</button>`).join('');
+ $('#page').innerHTML=[home,explore,fac,admin][nav]();
+ const hs=$('#hs');if(hs)hs.addEventListener('input',e=>{query=e.target.value;go(1);const s=$('#es');s.focus();s.setSelectionRange(query.length,query.length)});
+ const es=$('#es');if(es)es.addEventListener('input',e=>{query=e.target.value;const pos=query.length;render();const s=$('#es');s.focus();s.setSelectionRange(pos,pos)});
+ if(es)es.addEventListener('change',e=>addRecent(e.target.value));const fs=$('#fs');if(fs)fs.addEventListener('input',e=>{query=e.target.value;const pos=query.length;render();const s=$('#fs');s.focus();s.setSelectionRange(pos,pos)});
+}
+const dlg=$('#dlg');
+function show(html){dlg.innerHTML=html;if(!dlg.open)dlg.showModal()}
+function openPlace(i){const p=all()[i];
+ show(`<h3>${esc(p.name)}</h3><span class="cat">${esc(p.category)}</span> <span class="cat">${esc(p.block)}</span>
+ <p style="margin:14px 0 6px"><b>🗂️ Floor:</b> ${esc(p.floor)}${p.room?' • Room '+esc(p.room):''}</p>${p.faculty?`<p style="margin:6px 0"><b>🎓 Department:</b> ${esc(p.faculty)}</p>`:''}
+ <p style="line-height:1.5">${esc(p.description)}</p><div class="card" style="padding:14px;margin-top:12px"><b style="font-size:13px">How to get there</b><ol style="margin:8px 0 0;padding-left:20px;font-size:13px;line-height:1.7;color:var(--muted)"><li>Enter through the main gate</li><li>Head to the ${esc(p.block)}</li><li>Go to the ${esc(p.floor.toLowerCase())}</li><li>Ask the nearest help desk if unsure</li></ol></div><p class="note">Confirm the destination on campus before travelling.</p>
+ <div class="acts" style="flex-wrap:wrap"><button class="btn t" onclick="dlg.close()">Close</button><button class="btn o" onclick="fav(${i});dlg.close()">${isFav(p)?'★ Saved':'☆ Save'}</button><button class="btn o" onclick="share(${i})">Share</button><button class="btn" onclick="maps(${i})">➤ Directions</button></div>`)}
+function showEmergency(){show(`<h3>🚨 Help & emergency contacts</h3><p><b>Campus reception</b><br><a href="tel:08659222933">08659 - 222933</a> (official number from lbrce.ac.in)</p><p><b>Principal / HOD offices</b><br>Use the college website or campus notice board to verify current contact details.</p><p><b>Emergency services in India</b><br>112 — pan-India emergency response number.</p><div class="acts"><button class="btn" onclick="dlg.close()">Close</button></div>`)}
+$('#emg').onclick=showEmergency;
+$('#thm').onclick=()=>{const d=document.documentElement,dark=d.dataset.theme==='dark'||(d.dataset.theme!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches);d.dataset.theme=dark?'light':'dark';LS.set('theme',d.dataset.theme)};
+function editor(i){const e=i==null?null:places[i];
+ show(`<h3>${e?'Edit':'Add'} campus location</h3>
+ <input class="field" id="f1" placeholder="Name" value="${esc(e?.name||'')}">
+ <select class="field" id="f2">${CATS.slice(1).map(c=>`<option ${c===(e?.category||'Lab')?'selected':''}>${c}</option>`).join('')}</select>
+ <input class="field" id="f3" placeholder="Block" value="${esc(e?.block||'')}">
+ <input class="field" id="f4" placeholder="Floor / room" value="${esc(e?.floor||'Ground floor')}">
+ <textarea class="field" id="f5" rows="3" placeholder="Description">${esc(e?.description||'')}</textarea>
+ <div class="acts"><button class="btn t" onclick="dlg.close()">Cancel</button><button class="btn" onclick="saveP(${i==null?-1:i})">Save</button></div>`)}
+function saveP(i){const n=$('#f1').value.trim(),b=$('#f3').value.trim();if(!n||!b)return;
+ const v=P(n,$('#f2').value,b,$('#f4').value.trim(),$('#f5').value.trim());
+ if(i<0)places.push(v);else Object.assign(places[i],v);
+ dlg.close();render();toast('Demo data updated for this session.')}
+function addFaculty(){show(`<h3>Add faculty demo profile</h3><input class="field" id="g1" placeholder="Faculty name"><input class="field" id="g2" placeholder="Department"><input class="field" id="g3" placeholder="Block / cabin" value="Main Block"><div class="acts"><button class="btn t" onclick="dlg.close()">Cancel</button><button class="btn" onclick="saveF()">Add</button></div>`)}
+function saveF(){const n=$('#g1').value.trim();if(!n)return;faculty.push(P(n,'Faculty',$('#g3').value.trim(),'Confirm floor','Presentation demo profile. Replace with verified official information.',$('#g2').value.trim(),'Demo profile'));dlg.close();render()}
+function delPlace(i){const n=places[i].name;places.splice(i,1);render();toast(n+' removed from this demo session.')}
+render();
+</script>
+</body>
+</html>
